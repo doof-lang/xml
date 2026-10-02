@@ -108,11 +108,11 @@ class XmlParser {
         "XML declaration attributes must appear in version, encoding, standalone order",
       )
     }
-    encoding := try? attributes.get("encoding")
+    encoding := attributes.get("encoding")?
     if encoding != none && !isValidEncodingName(encoding!) {
       return failure<XmlDeclaration>(.InvalidSyntax, "Invalid XML encoding name")
     }
-    standaloneText := try? attributes.get("standalone")
+    standaloneText := attributes.get("standalone")?
     let standalone: bool | none = none
     if standaloneText != none {
       if standaloneText! == "yes" { standalone = true }
