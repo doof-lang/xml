@@ -54,9 +54,8 @@ export class XmlElement {
   childElements(): readonly XmlElement[] {
     elements: XmlElement[] := []
     for child of children {
-      case child {
-        element: XmlElement -> elements.push(element)
-        _ -> {}
+      if element := child as XmlElement {
+        elements.push(element)
       }
     }
     return elements.drainToReadonly()

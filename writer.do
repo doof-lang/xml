@@ -21,26 +21,24 @@ import {
 
 export function stringifyXml(document: XmlDocument): Result<string, XmlError> {
   output := StringBuilder()
-  declaration := document.declaration
-  if declaration != none {
-    value := declaration!
+  if value := document.declaration {
     if !isValidXmlVersion(value.version) {
       return xmlFailure<string>(.InvalidSyntax, 0, 1, 1, "Invalid XML declaration version")
     }
-    if value.encoding != none && !isValidEncodingName(value.encoding!) {
+    if encoding := value.encoding && !isValidEncodingName(encoding) {
       return xmlFailure<string>(.InvalidSyntax, 0, 1, 1, "Invalid XML encoding name")
     }
     output.append("<?xml version=\"")
     output.append(value.version)
     output.append("\"")
-    if value.encoding != none {
+    if encoding := value.encoding {
       output.append(" encoding=\"")
-      output.append(value.encoding!)
+      output.append(encoding)
       output.append("\"")
     }
-    if value.standalone != none {
+    if standalone := value.standalone {
       output.append(" standalone=\"")
-      output.append(if value.standalone! then "yes" else "no")
+      output.append(if standalone then "yes" else "no")
       output.append("\"")
     }
     output.append("?>")

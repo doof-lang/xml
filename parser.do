@@ -109,14 +109,13 @@ class XmlParser {
       )
     }
     encoding := attributes.get("encoding")?
-    if encoding != none && !isValidEncodingName(encoding!) {
+    if name := encoding && !isValidEncodingName(name) {
       return failure<XmlDeclaration>(.InvalidSyntax, "Invalid XML encoding name")
     }
-    standaloneText := attributes.get("standalone")?
     let standalone: bool | none = none
-    if standaloneText != none {
-      if standaloneText! == "yes" { standalone = true }
-      else if standaloneText! == "no" { standalone = false }
+    if standaloneText := attributes.get("standalone") {
+      if standaloneText == "yes" { standalone = true }
+      else if standaloneText == "no" { standalone = false }
       else {
         return failure<XmlDeclaration>(.InvalidSyntax, "standalone must be 'yes' or 'no'")
       }
